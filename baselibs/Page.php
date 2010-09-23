@@ -275,7 +275,6 @@ class Page
 	}
 	
 	private function FinalizeContent($content) {
-		
 		$content = preg_replace('/\s+/',' ',$content);
 		$content = preg_replace_callback('/([\.,;:!\?]+)/',create_function('$matches','return substr($matches[1],0,1);'),$content);
 		$content = preg_replace('/\s([,\.;!\?])/','${1}',$content);
@@ -285,16 +284,16 @@ class Page
 	}
 	
 	private function SetCache() {
-		$path = sprintf('data/content/%s'.base64_encode($this->keyword));
+		$path = sprintf('data/content/%s',base64_encode($this->keyword));
 		file_put_contents($path,gzcompress(serialize($this)));
 	}
 	
 	// static cache/object loader 
 	public static function GetCache($keyword) {
-		if(!file_exists(sprintf('data/content/%s'.base64_encode($keyword)))) {
+		if(!file_exists(sprintf('data/content/%s',base64_encode($keyword)))) {
 			return null;
 		}
-		return unserialize(gzuncompress(file_get_contents(sprintf('data/content/%s'.base64_encode($keyword)))));
+		return unserialize(gzuncompress(file_get_contents(sprintf('data/content/%s',base64_encode($keyword)))));
 	}
 }
 
