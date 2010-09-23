@@ -134,7 +134,6 @@ function GetPage($settings) {
 			}
                         $pages[0]->SkinIndex($pages);
                         $page = $pages[0];
-                        print_r($pages);
 			break;
 			
 		default:
