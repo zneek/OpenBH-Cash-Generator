@@ -60,10 +60,10 @@ class Page
 	
 	function __construct($keyword,$special=false,$advertisment=null,$empty=false) //$title,$content,$h1,$h2,$last,$next,$navlinks)
 	{
-		if(!file_exists("templates/site.html")) {
+		if(!file_exists(sprintf('templates/%s/site.html',OpenBHConf::get('template')))) {
 			return false;
 		}
-		$this->template = file_get_contents("templates/site.html");
+		$this->template = file_get_contents(sprintf('templates/%s/site.html',OpenBHConf::get('template')));
 		
 		$this->advertisment = $advertisment;
 		
