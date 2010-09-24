@@ -12,6 +12,7 @@
  * EarlGrey
  * 
  */
+session_start();
 
 include('config/config.php');
 
@@ -83,4 +84,11 @@ switch($page->responsecode)
 		echo utf8_encode($page->Skin($conf));
 		break;
 }
+
+
+/* log ... */
+if(OpenBHConf::get('loghits')==true) {
+    loghit($page);
+}
+
 ?>

@@ -183,7 +183,27 @@ function GetPage($settings) {
 }
 
 
+/* log hits... ;) */
+function loghit($page) {
+    /* since this is flatfile it sucks a bit ;)
+     * we are going to use session_id to track visitors over multiple clicks/hits etc ..
+     */
 
+    $logstr = sprintf('%s;%s;%s;%s;"%s";%s;"%s";"%s"',
+                      session_id(),
+                      $page->keyword,
+                      $page->filename,
+                      $_SERVER['REMOTE_ADDR'],
+                      gethostbyaddr($_SERVER['REMOTE_ADDR']),
+                      mktime(),
+                      $_SERVER['HTTP_REFERER'],
+                      $_SERVER['HTTP_USER_AGENT']
+    );
+
+    /* find current logfile or cycle */
+
+    file_put_contents('data/logs/1.txt',$logstr.PHP_EOL, FILE_APPEND);
+}
 
 
 ?>

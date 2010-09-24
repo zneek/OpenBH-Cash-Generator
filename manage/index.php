@@ -6,10 +6,7 @@
  * 
  */
 
-if(file_exists('install.php')) {
-    include('install.php');
-    exit;
-}
+$tmpl = file_get_contents('site.html');
 
 
 /* overview - errlog etc etc .. */

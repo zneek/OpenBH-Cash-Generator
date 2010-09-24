@@ -105,6 +105,9 @@ class OpenBHConf
             /* Choose a filetype */
             $this->conf['filetype'] = '.html';
 
+            /* log visitors and bots */
+            $this->conf['loghits'] = true;
+
             /* not working ? try log to errlog.txt */
             $this->conf['errlog'] = true;
     }
