@@ -10,7 +10,7 @@
 function Settings($uri) {
         if($uri==str_replace('index.php','',$_SERVER['SCRIPT_NAME'])) {
             /* index ... */
-            return array('filename'=>'index','uri'=>'index');
+            return array('filename'=>'index','uri'=>'index', 'keyword'=>'index');
         }
         $filename = '';
 	if(stripos($uri,"/")!==false) {
@@ -185,15 +185,15 @@ function GetPage($settings) {
 
 
 /* log hits... ;) */
-function loghit($page) {
+function loghit($page,$settings) {
     /* since this is flatfile it sucks a bit ;)
      * we are going to use session_id to track visitors over multiple clicks/hits etc ..
      */
 
-    $logstr = sprintf('%s;%s;%s;%s;"%s";%s;"%s";"%s"',
+    $logstr = sprintf('"%s";"%s";"%s";"%s";"%s";%s;"%s";"%s"',
                       session_id(),
-                      $page->keyword,
-                      $page->filename,
+                      $settings['keyword'],
+                      $settings['filename'],
                       $_SERVER['REMOTE_ADDR'],
                       gethostbyaddr($_SERVER['REMOTE_ADDR']),
                       time(),

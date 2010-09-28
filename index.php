@@ -88,7 +88,7 @@ switch($page->responsecode)
 
 /* log ... */
 if(OpenBHConf::get('loghits')==true) {
-    loghit($page);
+    loghit($page,$settings);
 }
 
 ?>

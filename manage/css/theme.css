@@ -103,6 +103,14 @@ form#form #button1:hover, form#form #button2:hover {
 #infobox{
 	border:1px solid #e8e7e1;
 }
+#infoboxwide{
+	border:1px solid #e8e7e1;
+}
+#infoboxwide h3{
+	background:#f7f6f0;
+	border-bottom:1px solid #e8e7e1;
+	color:#a43708;
+}
 #infobox h3{
 	background:#f7f6f0;
 	border-bottom:1px solid #e8e7e1;

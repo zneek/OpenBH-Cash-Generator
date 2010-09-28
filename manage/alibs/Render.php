@@ -6,11 +6,14 @@
  * $arr['key2'] = array(1,2,3,4);
  */
 
-function RenderTable($arr) {
+function RenderTable($arr,$keys=array()) {
     $width = count($arr);
     $headings = array();
     $data = array();
     foreach(array_keys($arr) as $key=>$val) {
+        if(count($keys)>0&&!in_array($val,$keys)) {
+            continue;
+        }
         array_push($headings,$val);
         for($i=0;$i<count($arr[$val]);$i++) {
             if(!is_array($data[$i])) {

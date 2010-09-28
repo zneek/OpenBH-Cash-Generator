@@ -239,6 +239,15 @@ thead{
 	float:left;
 	margin-top:10px;
 }
+#infoboxwide{
+	width:730px;
+	float:left;
+	margin-top:10px;
+}
+#infoboxwide h3{
+	padding:5px;
+	font-size:14px;
+}
 #infobox h3{
 	padding:5px;
 	font-size:14px;
