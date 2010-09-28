@@ -62,7 +62,9 @@ class SynReplace implements HookBase
                         }
                     }
                 }
-
+                $r = '';
+                $w = '';
+                $c = '';
                 $arr = array('.','!','?',',',' '); // possible word delimiters ;)
                 foreach(str_split($content) as $char) {
                     if(in_array($char,$arr)) {

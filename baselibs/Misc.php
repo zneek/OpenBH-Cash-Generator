@@ -12,13 +12,14 @@ function Settings($uri) {
             /* index ... */
             return array('filename'=>'index','uri'=>'index');
         }
+        $filename = '';
 	if(stripos($uri,"/")!==false) {
 		$filename = substr($uri,strrpos($uri,"/")+1);
 	} else {
 		$filename = $uri;
 	}
 	preg_match(OpenBHConf::get('filename_pattern'),$filename,$kwmatch);
-	// $filename = '';
+        $keyword = '';
 	if(count($kwmatch)>0) {
 		$keyword = $kwmatch[1];
 	}
@@ -195,14 +196,23 @@ function loghit($page) {
                       $page->filename,
                       $_SERVER['REMOTE_ADDR'],
                       gethostbyaddr($_SERVER['REMOTE_ADDR']),
-                      mktime(),
+                      time(),
                       $_SERVER['HTTP_REFERER'],
                       $_SERVER['HTTP_USER_AGENT']
     );
 
     /* find current logfile or cycle */
-
-    file_put_contents('data/logs/1.txt',$logstr.PHP_EOL, FILE_APPEND);
+    $path = sprintf('data/logs/%s.txt',strtotime("today"));
+    if(!file_exists($path)) {
+        // time to cycle..
+        touch($path);
+        if(is_writable($path)) {
+            if(!chmod($path,0777)) {
+                writeLog("no permission to chmod logfile ;(");
+            }
+        }
+    }
+    file_put_contents($path,$logstr.PHP_EOL, FILE_APPEND);
 }
 
 

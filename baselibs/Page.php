@@ -110,7 +110,7 @@ class Page
 		$filegen = preg_replace_callback(	"/{(.+?)}/",
                                                         create_function(    '$matches',
                                                                             '$expl = explode(",",$matches[1]);
-                                                                            if(function_exists($expl[0])) { return $expl[0]($expl[1]); } return "";'
+                                                                            if(function_exists($expl[0])) { if(isset($expl[1])) { return $expl[0]($expl[1]); } else { return $expl[0](); } } return "";'
                                                         ),
                                                         $filegen);
 		/* cleanup ;) */
@@ -126,6 +126,9 @@ class Page
 		$filenames = array();
 		$keywords = $datafeed->ReturnRandomEntries(rand(OpenBHConf::get('navlinks_min'),OpenBHConf::get('navlinks_max')));
 		foreach($keywords as $keyword) {
+                        if($keyword=='') {
+                            continue;
+                        }
 			/* we need to check if we already generated this page (because of the randomized filename..) */
 			$tmpPage = Page::GetCache($keyword);
 			if(is_null($tmpPage)) {
@@ -181,7 +184,8 @@ class Page
 		$this->template = str_ireplace("[[h2]]",$this->h2,$this->template);
 		
 		preg_match("/\[\[nav\]\](.+?)\[\[\/nav\]\]/is",$this->template,$navmatch);
-		foreach($this->navlinks as $kwf) {
+		$nav = '';
+                foreach($this->navlinks as $kwf) {
 			$nav .= str_replace("[[nav_url]]",$kwf['filename'],str_replace("[[keyword]]",$kwf['kw'],$navmatch[1]));
 		}
 		$this->template = preg_replace("/\[\[nav\]\](.+?)\[\[\/nav\]\]/is",$nav,$this->template);
@@ -214,7 +218,7 @@ class Page
  		$this->template = preg_replace_callback(	"/{{(.+?)}}/",
                                                                 create_function(    '$matches',
                                                                                     '$expl = explode(",",$matches[1]);
-                                                                                    if(function_exists($expl[0])) { return $expl[0]($expl[1]); } return "";'
+                                                                                    if(function_exists($expl[0])) { if(isset($expl[1])) { return $expl[0]($expl[1]); } else { return $expl[0](); } } return "";'
                                                                 ),
                                                                 $this->template);
 
@@ -284,16 +288,23 @@ class Page
 	}
 	
 	private function SetCache() {
-		$path = sprintf('data/content/%s',base64_encode($this->keyword));
+		if($this->keyword=='') {
+                    return false;
+                }
+                $path = sprintf('data/content/%s',base64_encode($this->keyword));
 		file_put_contents($path,gzcompress(serialize($this)));
 	}
 	
 	// static cache/object loader 
 	public static function GetCache($keyword) {
-		if(!file_exists(sprintf('data/content/%s',base64_encode($keyword)))) {
-			return null;
-		}
-		return unserialize(gzuncompress(file_get_contents(sprintf('data/content/%s',base64_encode($keyword)))));
+                if($keyword=='') {
+                    return null;
+                }
+                $path = sprintf('data/content/%s',base64_encode($keyword));
+                if(!file_exists($path)) {
+                            return null;
+                }
+                return unserialize(gzuncompress(file_get_contents(sprintf('data/content/%s',base64_encode($keyword)))));
 	}
 }
 

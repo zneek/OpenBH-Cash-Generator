@@ -81,7 +81,7 @@ switch($page->responsecode)
 			echo $page->content;
 			break;
 		}
-		echo utf8_encode($page->Skin($conf));
+		echo utf8_encode($page->Skin());
 		break;
 }
 

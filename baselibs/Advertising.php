@@ -39,9 +39,13 @@ class Advertising
 		 * since we most likely wont have mod_geoip 
 		 * we should use the country lite csv database from maxmind.com ..
 		 */
+                if(!isset($_SERVER['COUNTRY_CODE'])) {
+                    $_SERVER['COUNTRY_CODE'] = 'NA';
+                }
 		$s = array('#ref#','#country#');
 		$r = array($_SERVER['HTTP_REFERER'],$_SERVER['COUNTRY_CODE']);
-		return str_ireplace($s,$r,$output);
+		$output = str_ireplace($s,$r,$output);
+                return $output;
 	}
 }
 

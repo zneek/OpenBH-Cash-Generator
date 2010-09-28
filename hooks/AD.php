@@ -13,7 +13,10 @@ class Articles implements HookBase
 		shuffle($ArticleDashboards);
 		$url = sprintf($ArticleDashboards[0],str_replace(" ","+",$keyword));
 		preg_match_all("/<li><a href=\"(.+?)\"/",Internet::Grab($url),$umatches);
-		shuffle($umatches[1]);
+		if(count($umatches[1])==0) {
+                    return $content;
+                }
+                shuffle($umatches[1]);
 		preg_match_all("/<p class=\"articletext\">(.+?)<\/p/",Internet::Grab($umatches[1][0]),$cmatches);
 		foreach($cmatches[1] as $c) {
 			if(strlen($c)>=1000) {
