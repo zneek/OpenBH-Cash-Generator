@@ -20,6 +20,13 @@ $replace['hitstoday'] = RenderTable(TransformArray($log->logs[0]),array('keyword
 
 $replace['hitsyesterday'] = RenderTable(TransformArray($log->logs[1]),array('keyword','referer','filename'));
 
+$cArr = array();
+for($i=0;$i<7;$i++) {
+    $cArr['Hits'][$i] = count($log->logs[$i]);
+}
+$replace['hitslast7'] = RenderTable($cArr);
+
+
 /* overview - errlog etc etc .. */
 $search = array();
 foreach(array_keys($replace) as $key) {
