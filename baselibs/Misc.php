@@ -1,12 +1,35 @@
 <?php 
-/*
- * Syndk8 OpenBH
- * 
- * Various Functions ;)
- * 
+/******** Syndk8's OpenBH *********
+ *
+ * This program is free software
+ * licensed under the GPLv2 license.
+ * You may redistribute it and/or
+ * modify it under the terms of
+ * the GPLv2 license (see license.txt)
+ *
+ * Warning:
+ * OpenBH is for educational use
+ * Use OpenBH at your own risk !
+ *
+ * Credits:
+ * https://www.syndk8.com/openbh/people.html
+ *
+ ********************************/
+
+
+/**
+ *   baselibs/Misc.php
+ *   Various Functions
+ *
+ *   @author Neek
+ *   @todo Implement sockets ;)
  */
 
-
+/**
+ *  Load Settings from uri
+ * 
+ *  @return array
+ */
 function Settings($uri) {
         if($uri==str_replace('index.php','',$_SERVER['SCRIPT_NAME'])) {
             /* index ... */

@@ -1,11 +1,37 @@
 <?php
-/**
- * Description of Internet
+/******** Syndk8's OpenBH *********
  *
- * @author neek
+ * This program is free software
+ * licensed under the GPLv2 license.
+ * You may redistribute it and/or
+ * modify it under the terms of
+ * the GPLv2 license (see license.txt)
+ *
+ * Warning:
+ * OpenBH is for educational use
+ * Use OpenBH at your own risk !
+ *
+ * Credits:
+ * https://www.syndk8.com/openbh/people.html
+ *
+ ********************************/
+
+
+/**
+ *   baselibs/Internet.php
+ *   Hello World :)
+ *
+ *   @author Neek
+ *   @todo Implement sockets ;)
  */
 class Internet {
 
+    /**
+     * Grab some file from the internets
+     *
+     * @param string $url
+     * @return string $data
+     */
     public static function Grab($url) {
         $data = '';
         $url = str_replace(" ","+",$url);

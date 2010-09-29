@@ -1,16 +1,25 @@
 <?php 
-/*
- * Syndk8.com OpenBH 2010
- * 
- * Container holding Page object
- * 
- */
-
+/******** Syndk8's OpenBH *********
+ *
+ * This program is free software
+ * licensed under the GPLv2 license.
+ * You may redistribute it and/or
+ * modify it under the terms of
+ * the GPLv2 license (see license.txt)
+ *
+ * Warning:
+ * OpenBH is for educational use
+ * Use OpenBH at your own risk !
+ *
+ * Credits:
+ * https://www.syndk8.com/openbh/people.html
+ *
+ ********************************/
 
 /**
+ * baselibs/Page.php
  * The Page class is used to store (serialize) and load (deserialize) created pages 
  * or generate new pages as we need them
- * 
  * 
  * Special Page wtf?
  * special pages is simply missusing the page object to 
@@ -18,9 +27,7 @@
  * but is not building any content
  * 
  * @author Neek
- *
  */
-
 class Page
 {
 	// Content
@@ -57,7 +64,10 @@ class Page
 	public $staticAdContainer = array();
 
         private $cachedFuncStorage = array();
-	
+
+        /**
+         *  Creating a new page either with content or not 
+         */
 	function __construct($keyword,$special=false,$advertisment=null,$empty=false) //$title,$content,$h1,$h2,$last,$next,$navlinks)
 	{
 		if(!file_exists(sprintf('templates/%s/site.html',OpenBHConf::get('template')))) {
@@ -86,7 +96,10 @@ class Page
 			$this->SetCache();
 		}
 	}
-	
+
+        /**
+         * Content gets produced here
+         */
 	public function Init() {
 		$this->content = $this->BuildContent(OpenBHConf::get('hooks'));
 		
@@ -101,7 +114,10 @@ class Page
 		// store ..
 		$this->SetCache(); 
 	}
-	
+
+        /**
+         *  Building filenames as configured in config/config.php filename generator
+         */
 	private function BuildFilename() {
 		$filegen = OpenBHConf::get('filename_generator');
 		$s = array('%keyword%','%datecreated%');

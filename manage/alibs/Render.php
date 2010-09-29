@@ -1,10 +1,32 @@
 <?php
+/******** Syndk8's OpenBH *********
+ *
+ * This program is free software
+ * licensed under the GPLv2 license.
+ * You may redistribute it and/or
+ * modify it under the terms of
+ * the GPLv2 license (see license.txt)
+ *
+ * Warning:
+ * OpenBH is for educational use
+ * Use OpenBH at your own risk !
+ *
+ * Credits:
+ * https://www.syndk8.com/openbh/people.html
+ *
+ ********************************/
 
-/* 
- * render tables
- * $arr['key1'] = array(1,2,3,4);
- * $arr['key2'] = array(1,2,3,4);
+
+/**
+ *   manage/alibs/Render.php
+ *   simply rendering tables with headings.. use transform to change format from line to col based
+ *   render tables
+ *   $arr['key1'] = array(1,2,3,4);
+ *   $arr['key2'] = array(1,2,3,4);
+ *
+ *   @author Neek
  */
+
 
 function RenderTable($arr,$keys=array()) {
     $width = count($arr);

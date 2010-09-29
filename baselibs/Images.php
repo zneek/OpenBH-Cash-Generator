@@ -1,5 +1,34 @@
 <?php 
+/******** Syndk8's OpenBH *********
+ *
+ * This program is free software
+ * licensed under the GPLv2 license.
+ * You may redistribute it and/or
+ * modify it under the terms of
+ * the GPLv2 license (see license.txt)
+ *
+ * Warning:
+ * OpenBH is for educational use
+ * Use OpenBH at your own risk !
+ *
+ * Credits:
+ * https://www.syndk8.com/openbh/people.html
+ *
+ ********************************/
 
+
+/**
+ *   baselibs/Images.php
+ *   Bunch of Methods for Image processing
+ *
+ *   @author Neek
+ */
+
+/**
+ * Checks if the filename is possibly an image
+ * @param <type> $filename
+ * @return bool
+ */
 function IsImage($filename) {
 	$types = array('.jpg','.png','.bmp','.gif','.jpeg','.tiff','.tga');
 	if(stripos($filename,".")!==false) {
@@ -12,7 +41,10 @@ function IsImage($filename) {
 	}
 	return true;
 }
-
+/**
+ *  Actually Serving an image to the browser
+ *
+ */
 function ServeImg($filename) {
 	$img = null;
 	if(file_exists("data/img/".base64_encode($filename))) {
