@@ -18,11 +18,12 @@
 
 
 /**
-    index.php
-    Everything goes trough the index..
-
-    @author: Neek
-    @return: Website ;)
+ *   index.php
+ *   Everything goes trough the index..
+ *
+ *   @author Neek
+ *   @return Website ;)
+ *   @tutorial https://www.syndk8.com/openbh/
  */
 
 session_start();
