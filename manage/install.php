@@ -39,6 +39,9 @@
                 color: red;
                 font-weight: bold;
             }
+            .ok {
+                color: green;
+            }
         </style>
     </head>
 <?php
@@ -47,35 +50,61 @@
  */
 
 
-/* permissions */
-if(checkPermissions()==false) {
-    echo "<div class='msg'>Please make sure these Folders are writeable by php (use your ftp client to modify permissions)!</div>";
-    exit;
-}
+/* permissions etc */
 
-
-
-
-
+checkPermissions();
 
 
 
 function checkPermissions() {
-    $ok = true;
-    $files = array( '../data/content/',
+    $folders = array( '../data/content/',
                     '../data/img/',
-                    '../config/config.php',
-                    '../config/open.txt'
+                    '../data/logs/'
     );
+    $files = array( '../config/config.php',
+                    '../config/kw/open.txt'
+    );
+
     foreach($files as $filename) {
-        if(is_writeable($filename)!=true) {
-            $ok = false;
-            echo sprintf('<span class="err">%s</span> not writeable by php<br/>',str_replace('..','',$filename));
+        if(!file_exists($filename)) {
+            err("missing $filename");
+            continue;
         }
+        if(is_writeable($filename)) {
+            ok("OK $filename");
+            continue;
+        }
+        if(@chmod($filename,0755)) {
+            ok("changed mode of $filename to 0755 successfully");
+        }
+        err("Permission Problem $filename");
     }
-    return $ok;
+
+    foreach($folders as $folder) {
+        if(!file_exists($folder)) {
+            if(mkdir($folder,0755)) {
+                ok("Folder $folder created and mode set to 0755");
+                continue;
+            }
+            err("could ont create $folder");
+        }
+        if(!is_writeable($folder)) {
+            if(@chmod($folder,0755)) {
+                ok("changed mode of $folder to 0755 successfully");
+                continue;
+            }
+            err("$folder not writeable");
+        }
+        ok("$folder looking good");
+    }
 }
 
+function err($msg) {
+    echo sprintf('<span class="err">%s</span><br/>',$msg);
+}
+function ok($msg) {
+    echo sprintf('<span class="ok">%s</span><br/>',$msg);
+}
 
 ?>
 </html>
