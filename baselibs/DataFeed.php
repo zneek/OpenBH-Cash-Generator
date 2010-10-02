@@ -166,7 +166,7 @@ class DataFeed
 		$row = 1;
 		$result = null;
 		if (($handle = fopen("config/kw/open.txt", "r")) !== FALSE) {
-			while (($data = fgetcsv($handle, 10000, OpenBHConf::get('csv_delimiter'), OpenBHConf::get('csv_enclosure'))) !== FALSE) { // ,OpenBHConf::get('csv_escape')
+			while (($data = fgetcsv($handle, 10000, OpenBHConf::get('csv_delimiter'), OpenBHConf::get('csv_enclosure'))) !== FALSE) { // ,OpenBHConf::get('csv_escape') escape added php 5.3 .. ;(
 				if(str_replace('-',' ',strtolower($data[$this->fmap['keyword']]))!=strtolower($kw)) {
 		        	continue;
 		        }

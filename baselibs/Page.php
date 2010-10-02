@@ -81,7 +81,7 @@ class Page
 		$this->responsecode = 200;
 		$this->dontskin = 1;
 		$this->redirlink = null;
-		$this->keyword = $keyword;
+		$this->keyword = trim($keyword);
 		$this->filename = $this->BuildFilename();
                 
                 // static content snippets because this parts should really not be scraped on the fly
