@@ -95,6 +95,10 @@ class DataFeed
                 }
             } else {
                 foreach($this->feed as $line) {
+                    if(count($line)==1) {
+                        array_push($kwArr,$line); // we assume that this must be the keyword since this feed only contains one column..
+                        continue;
+                    }
                     array_push($kwArr,$line[$this->fmap['keyword']]);
                 }
             }
@@ -113,6 +117,9 @@ class DataFeed
                     if($key==0 || $key==false) {
                             return false;
                     }
+                    if(count($this->feed[$key-1])==1) {
+                        return $this->feed[$key-1][0]; // we assume that this must be the keyword since this feed only contains one column..
+                    }
                     return $this->feed[$key-1][$this->fmap['keyword']];
                 }
 	}
@@ -129,6 +136,9 @@ class DataFeed
                     if($key==(count($this->feed)-1) || $key==false) {
                             return false;
                     }
+                    if(count($this->feed[$key+1])==1) {
+                        return $this->feed[$key+1][0]; // we assume that this must be the keyword since this feed only contains one column..
+                    }
                     return $this->feed[$key+1][$this->fmap['keyword']];
                 }
 	}
@@ -144,6 +154,12 @@ class DataFeed
 		$ret = array();
 		while(count($ret)<$num) {
 			$rnd = rand(0,$cnt);
+                        if(count($this->feed[$rnd])==1) {
+                            if(!is_numeric(array_search($this->feed[$rnd][0], $ret))) {
+                                array_push($ret,$this->feed[$rnd][0]);
+                            }
+                            continue;
+                        }
 			if(!is_numeric(array_search($this->feed[$rnd][$this->fmap['keyword']], $ret))) {
                             array_push($ret,$this->feed[$rnd][$this->fmap['keyword']]);
                         }
@@ -166,9 +182,14 @@ class DataFeed
 		$row = 1;
 		$result = null;
 		if (($handle = fopen("config/kw/open.txt", "r")) !== FALSE) {
-			while (($data = fgetcsv($handle, 10000, OpenBHConf::get('csv_delimiter'), OpenBHConf::get('csv_enclosure'))) !== FALSE) { // ,OpenBHConf::get('csv_escape') escape added php 5.3 .. ;(
-				if(str_replace('-',' ',strtolower($data[$this->fmap['keyword']]))!=strtolower($kw)) {
-		        	continue;
+                    while (($data = fgetcsv($handle, 10000, OpenBHConf::get('csv_delimiter'), OpenBHConf::get('csv_enclosure'))) !== FALSE) { // ,OpenBHConf::get('csv_escape') escape added php 5.3 .. ;(
+			if(count($data)==1) { // we assume there is only the keyword since we have only one column in the feed
+                            if(str_replace('-',' ',strtolower($data[0]))!=strtolower($kw)) {
+                          	continue;
+                            }                            
+                        }
+                        else if(str_replace('-',' ',strtolower($data[$this->fmap['keyword']]))!=strtolower($kw)) {
+                          	continue;
 		        }
 		        $result = $data;
 		        break; // $data match
@@ -178,7 +199,10 @@ class DataFeed
 
 		// map col<>map
 		$linemap = null;
-		if(is_array($result)) {
+		if(count($result)==1) {
+                    $linemap['keyword'] = $result;
+                }
+                else if(is_array($result)) {
 			$lineMap = array();
 			foreach($this->fmap as $k=>$v) {
 				if(count($data)<$v) {
