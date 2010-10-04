@@ -135,10 +135,13 @@ class OpenBHConf
 
     public static function get($key)
     {
-    	$c = __CLASS__;
-        $settings = new $c;
-        if(array_key_exists($key,$settings->conf)) {
-        	return $settings->conf[$key];
+        global $OpenBHConf;
+        $c = __CLASS__;
+        if(!isset($OpenBHConf) || !is_a($OpenBHConf,$c)) {
+            $OpenBHConf = new $c;
+        }
+        if(array_key_exists($key,$OpenBHConf->conf)) {
+        	return $OpenBHConf->conf[$key];
         }
         return array();
     }
