@@ -50,13 +50,15 @@
  */
 
 
-/* permissions etc */
-
-checkPermissions(0755);
+if(checkPermissions(0755)) {
+    /* permissions and files ok */
+    
+}
 
 
 
 function checkPermissions($mode) {
+    $err = false;
     $folders = array( '../data/content/',
                     '../data/img/',
                     '../data/logs/'
@@ -68,6 +70,7 @@ function checkPermissions($mode) {
     foreach($files as $filename) {
         if(!file_exists($filename)) {
             err("missing $filename");
+            $err = true;
             continue;
         }
         if(is_writeable($filename)) {
@@ -78,6 +81,7 @@ function checkPermissions($mode) {
             ok("changed mode of $filename to $mode successfully");
         }
         err("Permission Problem $filename");
+        $err = true;
     }
 
     foreach($folders as $folder) {
@@ -86,7 +90,8 @@ function checkPermissions($mode) {
                 ok("Folder $folder created and mode set to $mode");
                 continue;
             }
-            err("could ont create $folder");
+            err("could not create $folder");
+            $err = true;
         }
         if(!is_writeable($folder)) {
             if(@chmod($folder,$mode)) {
@@ -94,9 +99,11 @@ function checkPermissions($mode) {
                 continue;
             }
             err("$folder not writeable");
+            $err = true;
         }
         ok("$folder looking good");
     }
+    return $err;
 }
 
 function err($msg) {
