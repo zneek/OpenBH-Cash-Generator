@@ -56,7 +56,13 @@ class DataFeed
                 $this->xmlobj = simplexml_load_file('config/kw/open.txt');
             } else {
 		if (($handle = fopen('config/kw/open.txt', 'r')) !== FALSE) {
-			while (($data = fgetcsv($handle, 10000, OpenBHConf::get('csv_delimiter'), OpenBHConf::get('csv_enclosure'))) !== FALSE) { // fuck you ,OpenBHConf::get('csv_escape')
+
+                    while(!feof($handle)) {
+                        if (strnatcmp(phpversion(),'5.3.0') >= 0) {
+                            $data = fgetcsv($handle, 10000, OpenBHConf::get('csv_delimiter'), OpenBHConf::get('csv_enclosure'),OpenBHConf::get('csv_escape'));
+                        } else {
+                            $data = fgetcsv($handle, 10000, OpenBHConf::get('csv_delimiter'), OpenBHConf::get('csv_enclosure'));
+                        }
 		        array_push($this->feed,$data);
 		    }
 		    fclose($handle);
@@ -70,7 +76,13 @@ class DataFeed
             } else {
                 $cnt = 0;
                 if (($handle = fopen("config/kw/open.txt", "r")) !== FALSE) {
-                    while (($data = fgetcsv($handle, 10000, OpenBHConf::get('csv_delimiter'), OpenBHConf::get('csv_enclosure'),OpenBHConf::get('csv_escape'))) !== FALSE) {
+
+                    while(!feof($handle)) {
+                        if (strnatcmp(phpversion(),'5.3.0') >= 0) {
+                            $data = fgetcsv($handle, 10000, OpenBHConf::get('csv_delimiter'), OpenBHConf::get('csv_enclosure'),OpenBHConf::get('csv_escape'));
+                        } else {
+                            $data = fgetcsv($handle, 10000, OpenBHConf::get('csv_delimiter'), OpenBHConf::get('csv_enclosure'));
+                        }
                         if($cnt==$amount) {
                             break;
                         }
@@ -182,18 +194,22 @@ class DataFeed
 		$row = 1;
 		$result = null;
 		if (($handle = fopen("config/kw/open.txt", "r")) !== FALSE) {
-                    while (($data = fgetcsv($handle, 10000, OpenBHConf::get('csv_delimiter'), OpenBHConf::get('csv_enclosure'))) !== FALSE) { // ,OpenBHConf::get('csv_escape') escape added php 5.3 .. ;(
-			if(count($data)==1) { // we assume there is only the keyword since we have only one column in the feed
+                    while(!feof($handle)) {
+                        if (strnatcmp(phpversion(),'5.3.0') >= 0) {
+                            $data = fgetcsv($handle, 10000, OpenBHConf::get('csv_delimiter'), OpenBHConf::get('csv_enclosure'),OpenBHConf::get('csv_escape'));
+                        } else {
+                            $data = fgetcsv($handle, 10000, OpenBHConf::get('csv_delimiter'), OpenBHConf::get('csv_enclosure'));
+                        }
+                        if(count($data)==1) { // we assume there is only the keyword since we have only one column in the feed
                             if(str_replace('-',' ',strtolower($data[0]))!=strtolower($kw)) {
                           	continue;
-                            }                            
-                        }
-                        else if(str_replace('-',' ',strtolower($data[$this->fmap['keyword']]))!=strtolower($kw)) {
+                            }
+                        } else if(str_replace('-',' ',strtolower($data[$this->fmap['keyword']]))!=strtolower($kw)) {
                           	continue;
 		        }
 		        $result = $data;
 		        break; // $data match
-		    }
+                    }
 		    fclose($handle);
 		}
 
@@ -201,8 +217,7 @@ class DataFeed
 		$linemap = null;
 		if(count($result)==1) {
                     $linemap['keyword'] = $result;
-                }
-                else if(is_array($result)) {
+                } else if(is_array($result)) {
 			$lineMap = array();
 			foreach($this->fmap as $k=>$v) {
 				if(count($data)<$v) {
@@ -211,7 +226,6 @@ class DataFeed
 				$lineMap[$k] = $data[$v];
 			}
 		}
-
 		return $lineMap;
 	}
 }
