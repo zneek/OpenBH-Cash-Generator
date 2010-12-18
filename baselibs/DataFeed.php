@@ -108,7 +108,7 @@ class DataFeed
             } else {
                 foreach($this->feed as $line) {
                     if(count($line)==1) {
-                        array_push($kwArr,$line); // we assume that this must be the keyword since this feed only contains one column..
+                        array_push($kwArr,$line[0]); // we assume that this must be the keyword since this feed only contains one column..
                         continue;
                     }
                     array_push($kwArr,$line[$this->fmap['keyword']]);
