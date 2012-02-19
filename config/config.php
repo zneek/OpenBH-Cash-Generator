@@ -163,8 +163,8 @@ function writeLog($err) {
 }
 
 function TemplateRewrite($filename) {
-    $p = str_replace(str_replace('index.php','',$_SERVER['SCRIPT_NAME']),'',$_SERVER['REQUEST_URI']);
-    if($p=='') {
+    $p = str_replace(str_replace('index.php','',$_SERVER['SCRIPT_NAME']),'/',$_SERVER['REQUEST_URI']);
+    if($p=='/') {
         return;
     }
     $fp = sprintf('templates/%s/%s',OpenBHConf::get('template'),$p);
