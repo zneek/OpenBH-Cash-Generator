@@ -124,15 +124,17 @@ class DataFeed
                 if(OpenBHConf::get('xmlfeed')==true) {
                     /* previous keyword .. */
                     return false;
-                } else {
-                    $key = array_search($kw,$this->feed);
-                    if($key==0 || $key==false) {
-                            return false;
-                    }
-                    if(count($this->feed[$key-1])==1) {
-                        return $this->feed[$key-1][0]; // we assume that this must be the keyword since this feed only contains one column..
-                    }
-                    return $this->feed[$key-1][$this->fmap['keyword']];
+                } else {             
+                    foreach($this->feed as $line) {
+                        if($line[$this->fmap['keyword']] == $kw) {
+                            return $lastline[$this->fmap['keyword']];
+                        }
+                        if($line[0] == $kw) {
+                            return $lastline[0];
+                        }
+                        $lastline = $line;
+                    }                               
+                    return false;
                 }
 	}
 
@@ -144,14 +146,23 @@ class DataFeed
                     /* next keyword .. */
                     return false;
                 } else {
-                    $key = array_search($kw,$this->feed);
-                    if($key==(count($this->feed)-1) || $key==false) {
-                            return false;
-                    }
-                    if(count($this->feed[$key+1])==1) {
-                        return $this->feed[$key+1][0]; // we assume that this must be the keyword since this feed only contains one column..
-                    }
-                    return $this->feed[$key+1][$this->fmap['keyword']];
+                   $match = false;
+                   $singlematch = false;
+                   foreach($this->feed as $line) {
+                        if($match) {
+                            return $line[$this->fmap['keyword']];
+                        }
+                        if($singlematch) {
+                            return $line[0];
+                        }
+                        if($line[$this->fmap['keyword']] == $kw) {
+                            $match = true;
+                        }
+                        if($line[0] == $kw) {
+                            $singlematch = true;
+                        }
+                    }                               
+                    return false;                        
                 }
 	}
 

@@ -27,14 +27,20 @@ class Bing implements HookBase
 {
 	function EnrichContent($content,$keyword,$args)
 	{
-                $kw = str_replace(" ","+",$keyword);
-                $url = sprintf("http://www.bing.com/search?q=%s+language:en&go=&form=QBRE&filt=all",$kw);
-		preg_match_all("/<h3><a (.+?)<\/p/si",Internet::Grab($url),$cmatches);
-		$gContent = implode(" ",$cmatches[1]);
-		$gContent = preg_replace("/(<\/?)(\w+)([^>]*>)/e"," ",$gContent);
-		$content .= $gContent;
+            $feeder = array( 'http://www.bing.com/search?q=%s+language:en&go=&form=QBLH&filt=all&format=rss' );
+            shuffle($feeder);
+            $link = sprintf($feeder[0],str_replace(' ','+',$keyword));
+            $feed = Internet::Grab($link);
+            preg_match_all('/<description>(.+?)<\/description>/si',$feed,$des);
+            preg_match_all('/<title>(.+?)<\/title>/si', $feed, $tit);
+            $retArr = array_merge($tit[1],$des[1]);
+            if(count($retArr)==0 || !is_array($retArr)) {
 		return $content;
 	}
+            shuffle($retArr);
+            $ret = sprintf('%s %s',$content,implode(' ',$retArr));
+            return $ret;
+}
 }
 
 ?>

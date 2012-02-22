@@ -1,0 +1,250 @@
+/*
+_______________________________
+CSS DOCUMENT */
+
+/*
+_______________________________
+STRUCTURE */
+
+html, body {
+	height: 100%;
+}
+
+body {
+	background: #b5b0b0 url(../images/bg-body.png) repeat-x;
+}
+
+#outerwrapper {
+	position: relative;
+	width: 960px;
+	margin: 0 auto;
+	min-height: 100%;
+	background: #fff;
+}
+
+*html #outerwrapper {
+	height: 100%;
+}
+
+#innerwrapper {
+	overflow: auto;
+	min-height: 0;
+	width: 960px;
+}
+
+#edgel {
+	position: absolute;
+	bottom: 0;
+	left: -10px;
+	width: 10px;
+	height: 100%;
+	background: url(../images/shadow-left.png) repeat-y 0 0;
+}
+
+*html #edgel {
+	background: none;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/shadow-left.png',sizingMethod='scale');
+}
+
+#edger {
+	position: absolute;
+	bottom: 0;
+	right: -10px;
+	width: 10px;
+	height: 100%;
+	background: url(../images/shadow-right.png) repeat-y 0 0;
+}
+
+*html #edger {
+	background: none;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/shadow-right.png',sizingMethod='scale');
+}
+
+*html #edgel, *html #edger {
+	height: 1000em; /* for ie6- height bigger than page will ever be */
+}
+
+
+/*
+_______________________________
+HEADER */
+
+#header {
+	height: 50px;
+	font: 2.1em "Trebuchet MS", "Century Gothic";
+	color: #666;
+	background: #fff url(../images/bg-header.png);
+}
+
+#logo {
+	vertical-align: middle;
+}
+
+/*
+_______________________________
+MAIN */
+
+#mainleft {
+	overflow: auto;
+	background: #fff url(../images/bg-main-girl-pink-r.jpg) no-repeat;
+}
+
+#mainright {
+	overflow: auto;
+	background: #fff url(../images/bg-main-girl-pink.jpg) no-repeat;
+}
+
+/*
+_______________________________
+AD WRAPPERS */
+
+#adblockleft {
+	float: left;
+}
+
+#adblockright {
+	float: right;
+}
+
+
+/*
+_______________________________
+COLUMNS */
+
+#primary, #secondary, #tertiary {
+	float: left;
+}
+
+* html #primary, * html #secondary, * html #tertiary {
+	display: inline;
+}
+
+/*
+_______________________________
+CONTENT */
+
+.content {
+	padding: 10px;
+}
+
+#primary .content, #secondary .content, #tertiary .content {
+	padding: 20px;
+}
+
+/*
+_______________________________
+LAYOUT 1 */
+
+body.l1 #primary {
+	width: 640px;
+}
+
+body.l1 #secondary {
+	width: 320px;
+}
+
+body.l1 #tertiary {
+	display: none;
+}
+
+/*
+_______________________________
+LAYOUT 2 */
+
+body.l2 #primary {
+	width: 640px;
+	margin-left: 320px 
+}
+
+body.l2 #secondary {
+	width: 320px;
+	margin-left: -960px;
+}
+
+body.l2 #tertiary {
+	display: none;
+}
+
+/*
+_______________________________
+SIDE NAV */
+
+#sidenav li {
+	font: Arial, Helvetica, sans-serif;
+	list-style-type: none;
+	color: #0000FF;
+	font-size: 14px;
+}
+
+#sidenav li a {
+
+	text-decoration: underline;
+	color: #0000FF;
+}
+
+#sidenav li a:hover {
+	color: #333;
+}
+
+/*
+_______________________________
+BOTTOM NAV */
+
+#bottomnav {
+	height: 50px;
+	width: 960px;
+	background: #fff;
+	line-height: 50px;
+	text-align: center;
+	font-size: 1.2em;
+	background: #fff url(../images/bg-header.png);
+}
+
+/*
+_______________________________
+FOOTER */
+
+#footer {
+	overflow: auto;
+	width: 960px;
+	background: #fff;
+	
+}
+
+#secure {
+	text-align: right;
+	margin: 0 10px 8px 0;
+}
+
+.footerlinks {
+	float: left;
+	width: 223px;
+	margin: 10px 0 10px 10px;
+}
+
+.footerlinks li, .footerlinks li a {
+	list-style-type: none;
+	font-size: 1em;
+	color: #999;
+	text-decoration: none;
+}
+
+.footerlinks li a:hover {
+	color: #333;
+}
+
+/*
+_______________________________
+OPERA AND IE8 FOOTER FIX */
+
+body:before {
+	content: "";
+	height: 100%;
+	float: left;
+	width: 0;
+	margin-bottom: -160px;
+}
+
+/*
+_______________________________
+END */
