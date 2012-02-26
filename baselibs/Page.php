@@ -226,8 +226,8 @@ class Page
 		
 		if(stripos($this->template,"[[dynamicad(js)#")!==FALSE || stripos($this->template,"[[dynamicad(html)]]")!==FALSE) {
 			$ad = new DynamicAdvertising($this->keyword,OpenBHConf::get('dynadhook'));
-			$this->template = str_ireplace("[[dynamicad(js)]]",$ad->ServeAdJS());
-			$this->template = str_ireplace("[[dynamicad(html)]]",$ad->ServeAdHTML());
+			$this->template = str_ireplace("[[dynamicad(js)]]",$ad->ServeAdJS(),$this->template);
+			$this->template = str_ireplace("[[dynamicad(html)]]",$ad->ServeAdHTML(),$this->template);
 		}
 
                 /* on the fly function tokens.. {{funcName}} */
