@@ -304,6 +304,10 @@ class Page
 	}
 	
 	private function SetCache() {
+            if(OpenBHConf::get('db')) {
+                $this->SetCacheDB();
+                return;
+            }
 		if($this->keyword=='') {
                     return false;
                 }
@@ -311,17 +315,50 @@ class Page
 		file_put_contents($path,gzcompress(serialize($this)));
 	}
 	
+    private function SetCacheDB() {
+        $oc_identifier = base64_encode($this->keyword);
+        $oc_data = gzcompress(serialize($this));
+        $dbl = new DBLayer();
+        if($dbl->Exists("SELECT oc_id FROM openbh_cache WHERE oc_identifier = '{$oc_identifier}'")) {
+            if($dbl->Query("UPDATE openbh_cache SET oc_data = '{$oc_data}' WHERE oc_identifier = '{$oc_identifier}'")) {
+                $dbl->EndSession(true);
+                return true;
+            }
+            $dbl->EndSession(false);
+            return false;
+        }
+        $oc_data = mysql_real_escape_string($oc_data);
+        $sql = "INSERT INTO openbh_cache SET oc_data = '{$oc_data}', oc_identifier = '{$oc_identifier}'";
+        if($dbl->Query($sql)) {
+            $dbl->EndSession(true);
+            return true;
+        }
+
+        $dbl->EndSession(false);
+        return false;
+    }
+
+    public static function GetCacheDB($keyword) {
+        $oc_identifier = base64_encode($keyword);
+        $dbl = new DBLayer();
+        $oc = $dbl->QueryAndReturn("SELECT oc_data FROM openbh_cache WHERE oc_identifier = '{$oc_identifier}'");
+        foreach($oc as $c) {
+            return unserialize(gzuncompress($c['oc_data']));
+        }
+    }
+
 	// static cache/object loader 
 	public static function GetCache($keyword) {
-                if($keyword=='') {
-                    return null;
-                }
-                $path = sprintf('data/content/%s',base64_encode($keyword));
-                if(!file_exists($path)) {
-                            return null;
-                }
-                return unserialize(gzuncompress(file_get_contents(sprintf('data/content/%s',base64_encode($keyword)))));
+            if($keyword=='') {
+                return null;
+            }
+            if(OpenBHConf::get('db')) {
+                return Page::GetCacheDB($keyword);
+            }
+            $path = sprintf('data/content/%s',base64_encode($keyword));
+            if(!file_exists($path)) {
+                        return null;
+            }
+            return unserialize(gzuncompress(file_get_contents(sprintf('data/content/%s',base64_encode($keyword)))));
 	}
 }
-
-?>
