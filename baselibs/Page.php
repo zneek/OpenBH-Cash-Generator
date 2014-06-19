@@ -250,6 +250,15 @@ class Page
                     }
                     $this->template = str_ireplace(sprintf('((%s))',$cachedFunc),$this->cachedFuncStorage[$cachedFunc],$this->template);
                 }
+                /* i love syndk8 */
+                $cc = OpenBHConf::get('cc');
+                $cn = " ".OpenBHConf::get('cn');
+                if(strtoupper($cc)=='US') {
+                    $cc = '';
+                    $cn = '';
+                }
+                $this->template = str_ireplace('[LOVE]',"<a href='https://www.syndk8.com/{$cc}'>Make Money Online{$cn}",$this->template);
+                
                 /* replace the rest */
 		$this->template = preg_replace('/\[\[.+?\]\]/','',$this->template);
                 $this->template = preg_replace('/\[\[\/.+?\]\]/','',$this->template);
@@ -273,7 +282,7 @@ class Page
 			if(!array_key_exists('prob',$HookList[$hook])) {
 				continue; // missconfigured class - check $conf['hooks'] ..
 			}
-			if(rand(0,100)<$HookList[$hook]) {
+			if(rand(0,100)<$HookList[$hook]['prob']) {
 				$h = new $hook();
 				$content = $h->EnrichContent($content,$this->keyword,$HookList[$hook]);
 			}
@@ -295,15 +304,29 @@ class Page
 	}
 	
 	private function FinalizeContent($content) {
-		$content = preg_replace('/\s+/',' ',$content);
+		// Strip html tags that didn't get filtered out in the hooks
+		$content = strip_tags(html_entity_decode($content),'<li><ul><p>');
+
+		// todo: remove CDATA and random chars that can't be displayed (shown as squares)
+
+		// Reduce all multiple whitespaces to singles
+		$content = preg_replace('/\s+/',' ',$content); 
+		// Reduce all multiple .,;:!? to singles
 		$content = preg_replace_callback('/([\.,;:!\?]+)/',create_function('$matches','return substr($matches[1],0,1);'),$content);
+		// Remove spaces in front of ,.;!?
 		$content = preg_replace('/\s([,\.;!\?])/','${1}',$content);
+		// Insert space when ,.;!? is followed by a letter (new sentence)
 		$content = preg_replace('/([,\.;!\?])(\w)/','${1} ${2}',$content);
+		// Capitalize the first word of a sentence
 		$content = preg_replace_callback('/([,\.;!\?])\s(\w)/',create_function('$matches','return sprintf("%s %s",$matches[1],ucfirst($matches[2]));'),$content);
 		return $content;
 	}
 	
 	private function SetCache() {
+            if(OpenBHConf::get('db')) {
+                $this->SetCacheDB();
+                return;
+            }
 		if($this->keyword=='') {
                     return false;
                 }
@@ -311,10 +334,42 @@ class Page
 		file_put_contents($path,gzcompress(serialize($this)));
 	}
 	
+        private function SetCacheDB() {
+            $oc_identifier = base64_encode($this->keyword);
+            $oc_data = gzcompress(serialize($this));
+            $dbl = new DBLayer();
+            if($dbl->Exists("SELECT oc_id FROM openbh_cache WHERE oc_identifier = '{$oc_identifier}'")) {
+                if($dbl->Query("UPDATE openbh_cache SET oc_data = '{$oc_data}' WHERE oc_identifier = '{$oc_identifier}'")) {
+                    $dbl->EndSession(true);
+                    return true;
+                }
+                $dbl->EndSession(false);
+                return false;
+            }
+            if($dbl->Query("INSERT INTO openbh_cache SET oc_data = '{$oc_data}', oc_identifier = '{$oc_identifier}'")) {
+                $dbl->EndSession(true);
+                return true;
+            }
+            $dbl->EndSession(false);
+            return false;
+        }
+
+        public static function GetCacheDB($keyword) {
+            $oc_identifier = base64_encode($keyword);
+            $dbl = new DBLayer();
+            $oc = $dbl->QueryAndReturn("SELECT oc_data FROM openbh_cache WHERE oc_identifier = '{$oc_identifier}'");
+            foreach($oc as $c) {
+                return unserialize(gzuncompress($c['oc_data']));
+            }
+        }
+
 	// static cache/object loader 
 	public static function GetCache($keyword) {
                 if($keyword=='') {
                     return null;
+                }
+                if(OpenBHConf::get('db')) {
+                    return Page::GetCacheDB($keyword);
                 }
                 $path = sprintf('data/content/%s',base64_encode($keyword));
                 if(!file_exists($path)) {

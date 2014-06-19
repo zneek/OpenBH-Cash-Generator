@@ -109,7 +109,7 @@ function GetPage($settings) {
 				$rss .= sprintf('<item>
 	    							<title>%s</title>
 	    							<link>%s%s</link>
-	    							<description>%s</description>
+	    							<description><![CDATA[%s]]></description>
 	    							<author>admin</author>
 	    							<pubDate>%s</pubDate>   							
         						</item>',

@@ -5,3 +5,26 @@ https://www.syndk8.com/
 Checkout further documentation here:
 
 https://www.syndk8.com/openbh/readme.html
+
+
+
+** Quick Installation **
+
+Unzip openbh.zip
+Upload the files to your webserver
+Navigate to /manage/ with your webbrowser
+Fill in the required data and click ok
+Done
+
+
+** Changelog **
+
+Version 1.0.2 / 22.02.2012
+-- page.php
+   - added stripping of html tags that show up in text
+   - added comments to FinalizeContent function
+
+Version 1.0.1 / 20.11.2011
+-- config.php
+   - fixed a bug in TemplateRewrite() function
+   - added function set() that allows changing of the config settings with hooks

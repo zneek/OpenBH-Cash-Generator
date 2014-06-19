@@ -30,6 +30,11 @@ include('alibs/Misc.php');
 
 $tmpl = file_get_contents('site.html');
 
+if(!file_exists('../data/logs/installed')) {
+    include('install.php');
+    exit;
+}
+
 $log = new LogParser(7); // loads last 7 days ..
 
 $replace['rightnow'] = sprintf('You served %s Requests so far today (Yesterday %s)..',count($log->logs[0]),count($log->logs[1]));

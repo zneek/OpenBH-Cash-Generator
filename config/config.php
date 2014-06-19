@@ -111,6 +111,10 @@ class OpenBHConf
             /* url patterns */
             $this->conf['filename_pattern'] = "/_(.*)_/";
             $this->conf['filename_generator'] = "{countfiles}-{num,3}_%keyword%_%datecreated%"; // {generator,args} %tokens% (special 'stuff')
+            
+            /* cc + cn */
+            $this->conf['cc'] = 'us';
+            $this->conf['cn'] = 'USA';
 
             /* CSV Setup */
             $this->conf['csv_delimiter'] = ','; // only one character!
@@ -145,11 +149,22 @@ class OpenBHConf
         }
         return array();
     }
+
+    public static function set($key,$value)
+    {
+        global $OpenBHConf;
+        $c = __CLASS__;
+        if(!isset($OpenBHConf) || !is_a($OpenBHConf,$c)) {
+            $OpenBHConf = new $c;
+        }
+        $OpenBHConf->conf[$key] = $value;
+        return array();
+    }
 }
 
 
 /**
- *  Various Stuff, Logging, TemplateRewrite etc
+ *  Various Stuff, Logging, TemplateRewrite etc 
  */
 
 function autoLog($errornum, $errormsg, $errorfile, $errorline) {
@@ -163,8 +178,8 @@ function writeLog($err) {
 }
 
 function TemplateRewrite($filename) {
-    $p = str_replace(str_replace('index.php','',$_SERVER['SCRIPT_NAME']),'',$_SERVER['REQUEST_URI']);
-    if($p=='') {
+    $p = str_replace(str_replace('index.php','',$_SERVER['SCRIPT_NAME']),'/',$_SERVER['REQUEST_URI']);
+    if($p=='/') {
         return;
     }
     $fp = sprintf('templates/%s/%s',OpenBHConf::get('template'),$p);

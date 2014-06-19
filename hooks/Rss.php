@@ -28,6 +28,7 @@ class Rss implements HookBase
 	function EnrichContent($content,$keyword,$args)
 	{
             $feeder = array(    'http://news.search.yahoo.com/rss?ei=UTF-8&p=%s&fr=sfp',
+                                'http://blekko.com/ws/%s/rss',
                                 'http://blogsearch.google.com/blogsearch_feeds?hl=en&q=%s&ie=utf-8&num=10&output=rss',
                                 'http://www.bing.com/search?q=%s+language:en&go=&form=QBLH&filt=all&format=rss'
             );

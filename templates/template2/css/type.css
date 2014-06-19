@@ -1,0 +1,174 @@
+/*
+_______________________________
+CSS DOCUMENT */
+
+/*
+_______________________________
+TYPE */
+
+html {
+	font-size: 100%;
+}
+
+body {
+	font-size: 62.5%;
+	font-family: Arial, Helvetica, sans-serif;
+	color: #000;
+}
+
+/*
+_______________________________
+PARAGRAPHS */
+
+p {
+	font-size: 1.2em;
+	line-height: 1.333333em;
+	margin-bottom: 1.333333em;
+}
+
+/*
+_______________________________
+HEADINGS */
+
+h1 {
+	color: #000;
+	font-size: 3em;
+	margin-bottom: 0.6em;
+	font-style: italic;
+	line-height: 1.2em;
+}
+
+h2 {
+	color: #000;
+	font-size: 2em;
+	margin-bottom: 0.9em;
+	line-height: 0.9em;
+}
+
+h3 {
+	color: #000;
+	font-size: 1.5em;
+	margin-bottom: 0.6em;
+	line-height: 1.2em;
+	font-weight: normal;
+}
+
+h4 {
+	color: #000;
+	font-size: 1.2em;
+	margin-bottom: 1.5em;
+	line-height: 1.5em;
+}
+
+h5 {
+	color: #000;
+	font-size: 1em;
+	margin-bottom: 1.8em;
+	line-height: 1.8em;
+}
+
+h6 {
+	color: #000;
+	font-size: 1em;
+	margin-bottom: 1.8em;
+	line-height: 1.8em;
+}
+
+/*
+_______________________________
+LINKS */
+
+a {
+	color: #0000cc;
+}
+
+a:visited {
+	color: #551a8b;
+}
+
+/*
+_______________________________
+HORIZONTAL RULES */
+
+hr {
+	color: #fff;
+	background-color: #fff;
+	border: 2px dotted #ccc;
+	border-style: none none dotted;
+	margin: 0;
+	padding: 0;
+	font-size: 0;
+	line-height: 0;
+}
+
+/*
+_______________________________
+IMAGE STYLES */
+
+img {
+	font-size: 1em;
+}
+
+/* Float any image to the LEFT and give it some margin */
+img.left {
+	float: left;
+	padding: 4px;
+	border: 1px solid #ccc;
+	margin-bottom: 1.8em;
+	margin-right: 2em;
+	margin-top: 0.3em;
+}
+
+/* Float any image to the RIGHT and give it some margin */
+img.right {
+	float: right;
+	padding: 4px;
+	border: 1px solid #ccc;
+	margin-bottom: 1.8em;
+	margin-left: 2em;
+	margin-top: 0.3em;
+}
+
+/*
+_______________________________
+LIST STYLES */
+
+ul {
+	margin-bottom: 1.8em;
+	list-style: square inside;
+}
+
+ul li {
+	font-size: 1.2em;
+	line-height: 1.5em;
+}
+
+/* Apply this class to the first list item in a list to give it a caption */
+ul li.caption {
+	font-variant: small-caps;
+	list-style: none;
+	color: #000;
+}
+
+li > ul, li > ol {
+	margin-bottom: 0;
+	margin-left: 5em;
+}
+
+li > ul li, li > ol li {
+	font-size: 1em;
+}
+
+ol {
+	margin-bottom: 1.8em;
+	list-style: decimal inside;
+}
+
+ol li {
+	font-size: 1.2em;
+	line-height: 1.5em;
+}
+
+/*
+_______________________________
+END */
