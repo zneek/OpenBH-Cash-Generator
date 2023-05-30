@@ -34,6 +34,20 @@ class OpenBHConf
     	$this->conf['domain'] = 'http://217.150.241.141/syndk8tools/openbh/';
 
         $this->conf['template'] = 'template1';
+        
+        $this->conf['db'] = false; 
+        $this->conf['dbuser'] = '';
+        $this->conf['dbpass'] = '';
+        $this->conf['dbname'] = '';
+
+        /* 
+           CREATE TABLE `openbh_cache` (
+              `oc_id` int(11) NOT NULL AUTO_INCREMENT,
+              `oc_identifier` varchar(256) NOT NULL,
+              `oc_data` blob NOT NULL,
+              PRIMARY KEY (`oc_id`)
+            );
+        */
 		
             /**
              * Hooks Setup

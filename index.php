@@ -31,6 +31,7 @@ session_start();
 include('config/config.php');
 
 /* base */
+include('baselibs/DB.php');
 include('baselibs/DataFeed.php');
 include('baselibs/HookBase.php');
 include('baselibs/ImghookBase.php');

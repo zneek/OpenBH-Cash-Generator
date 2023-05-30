@@ -39,7 +39,7 @@ class DynamicAdvertising extends Advertising
 		}
 		$ad = new $adhook[0]();
 		$this->AdArray = $ad->ReturnData($keyword);
-		$this->template = file_get_contents("templates/DynamicAd.html");
+		$this->template = file_get_contents("templates/".OpenBHConf::get('template')."/DynamicAd.html");
 	}
 }
 ?>
